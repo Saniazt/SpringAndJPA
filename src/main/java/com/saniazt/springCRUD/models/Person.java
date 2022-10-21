@@ -1,6 +1,9 @@
 package com.saniazt.springCRUD.models;
 
 public class Person {
+
+    public Person() {}
+
     private int id;
     private String name;
 
