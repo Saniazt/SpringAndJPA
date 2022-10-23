@@ -51,6 +51,7 @@ public class PeopleController {
     return "redirect:/people";
     }
 
+
     @PostMapping()
     public String create(@ModelAttribute("person") Person person){
         personDAO.save(person);

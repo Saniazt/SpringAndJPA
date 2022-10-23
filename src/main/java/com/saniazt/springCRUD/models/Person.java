@@ -7,9 +7,25 @@ public class Person {
     private int id;
     private String name;
 
+    private int age;
+
     public Person(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Person(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     public int getId() {
