@@ -4,9 +4,14 @@ package com.saniazt.springCRUD.controllers;
 import com.saniazt.springCRUD.dao.PersonDAO;
 import com.saniazt.springCRUD.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/people")
@@ -46,18 +51,25 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person")Person person, @PathVariable("id")int id){
-    personDAO.update(id,person);
-    return "redirect:/people";
+    public String update(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult,
+                         @PathVariable("id")int id){
+        if(bindingResult.hasErrors()) return "people/edit";
+
+       else personDAO.update(id,person);
+        return "redirect:/people";
     }
 
 
     @PostMapping()
-    public String create(@ModelAttribute("person") Person person){
-        personDAO.save(person);
+    public String create(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return "people/new";
+
+      else   personDAO.save(person);
         return "redirect:/people";
     }
-
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id")int id){
         personDAO.delete(id);
