@@ -3,6 +3,7 @@ package com.saniazt.springCRUD.controllers;
 
 import com.saniazt.springCRUD.dao.PersonDAO;
 import com.saniazt.springCRUD.models.Person;
+import com.saniazt.springCRUD.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,12 @@ public class PeopleController {
 
 
     private final PersonDAO personDAO;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO) {
+    public PeopleController(PersonDAO personDAO, PersonValidator personValidator) {
         this.personDAO = personDAO;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -53,6 +56,7 @@ public class PeopleController {
     public String update(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
+        personValidator.validate(person,bindingResult);
         if (bindingResult.hasErrors()) return "people/edit";
 
         else personDAO.update(id, person);
@@ -63,6 +67,7 @@ public class PeopleController {
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
+        personValidator.validate(person,bindingResult);
         if (bindingResult.hasErrors())
             return "people/new";
 
