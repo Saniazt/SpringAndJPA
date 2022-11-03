@@ -1,10 +1,7 @@
 package com.saniazt.springCRUD.models;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class Person {
 
@@ -17,15 +14,24 @@ public class Person {
     @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")
     private String email;
+    private int adminOrNot;
+
+    // Страна, Город, Индекс(6 цифр)
+    @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}", message = "Your address should be in thi format: Country, City, Postal Code(6 digits)")
+    private String address;
+
 
     public Person() {
     }
 
-    public Person(int id, String name, int age, String email) {
+    public Person(int id, String name, int age, String email, String address, int adminOrNot) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
+        this.address = address;
+        this.adminOrNot = adminOrNot;
+
     }
 
     public void setAge(int age) {
@@ -58,5 +64,21 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getAdminOrNot() {
+        return adminOrNot;
+    }
+
+    public void setAdminOrNot(int adminOrNot) {
+        this.adminOrNot = adminOrNot;
     }
 }

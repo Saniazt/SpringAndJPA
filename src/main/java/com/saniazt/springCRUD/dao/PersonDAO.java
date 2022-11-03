@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,21 +41,30 @@ public class PersonDAO {
                 new BeanPropertyRowMapper<>(Person.class))
                 .stream().findAny();
     }
+    public Optional<Person> showAdmin(int adminOrNot){
+        return jdbcTemplate.query("Select * From Person where is_admin=1",new Object[]{adminOrNot},new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+    }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person(name, age, email) VALUES(?,?,?)",
+        jdbcTemplate.update("INSERT INTO Person(name, age, email,address) VALUES(?,?,?,?)",
                 person.getName(),
                 person.getAge(),
-                person.getEmail());
+                person.getEmail(),
+                person.getAddress());
 
     }
 
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE Person SET name=?,age=?,email=? WHERE id=?",
+        jdbcTemplate.update("UPDATE Person SET name=?,age=?,email=?,address=? WHERE id=?",
                 updatedPerson.getName(),
                 updatedPerson.getAge(),
                 updatedPerson.getEmail(),
+                updatedPerson.getAddress(),
                 id);
+    }
+
+    public void updateAdmin(int id, Person updatedPerson){
+        jdbcTemplate.update("UPDATE person SET is_admin=1 WHERE id=?", updatedPerson.getId(),id);
     }
 
     public void delete(int id) {
@@ -72,8 +82,7 @@ public class PersonDAO {
         List<Person> people = create1000People();
         long before = System.currentTimeMillis();
         for(Person person: people) {
-            jdbcTemplate.update("INSERT INTO Person VALUES(?,?,?,?)",
-                    person.getId(),
+            jdbcTemplate.update("INSERT INTO Person(name, age, email) VALUES(?,?,?)",
                     person.getName(),
                     person.getAge(),
                     person.getEmail());
@@ -86,18 +95,17 @@ public class PersonDAO {
         List<Person> people = create1000People();
         long before = System.currentTimeMillis();
 
-        jdbcTemplate.batchUpdate("INSERT INTO Person VALUES(?,?,?,?)", new BatchPreparedStatementSetter() {
+        jdbcTemplate.batchUpdate("INSERT INTO Person(name, age, email) VALUES(?,?,?)", new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setInt(1,people.get(i).getId());
-                ps.setString(2,people.get(i).getName());
-                ps.setInt(3,people.get(i).getAge());
-                ps.setString(4,people.get(i).getEmail());
+                ps.setString(1,people.get(i).getName());
+                ps.setInt(2,people.get(i).getAge());
+                ps.setString(3,people.get(i).getEmail());
             }
 
             @Override
             public int getBatchSize() {
-                return 1000;
+                return 10;
             }
         });
 
@@ -107,8 +115,8 @@ public class PersonDAO {
 
     private List<Person> create1000People(){
         List<Person> people = new ArrayList<Person>();
-        for (int i =0;i<1000;i++){
-            people.add(new Person(i,"Name"+i,30,"test"+i+"gmail.com"));
+        for (int i =0;i<10;i++){
+            people.add(new Person(i,"Name"+i,30,"test3"+i+"gmail.com","Some address",0));
         }
         return people;
     }
