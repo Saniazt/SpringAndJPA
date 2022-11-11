@@ -95,6 +95,13 @@
             <artifactId>spring-orm</artifactId>
             <version>5.3.23</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
 
     </dependencies>
 
