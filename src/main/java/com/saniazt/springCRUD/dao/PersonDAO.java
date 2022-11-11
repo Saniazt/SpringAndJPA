@@ -6,10 +6,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.List;
-import java.util.Optional;
+
 
 @Component
 public class PersonDAO {
@@ -22,38 +20,43 @@ public class PersonDAO {
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Person> index() {
         Session session = sessionFactory.getCurrentSession();
         // hibernate code below:
-        List<Person> people =  session.createQuery("select p from Person p", Person.class).getResultList();
-        return people;
+        return session.createQuery("select p from Person p", Person.class).getResultList();
     }
 
 
+    @Transactional(readOnly = true)
     public Person show(int id) {
-        return null;
-    }
-
-    public Optional<Person> show(String email) {
-        return Optional.empty();
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Person.class,id);
     }
 
 
+    @Transactional
     public void save(Person person) {
+        Session session =sessionFactory.getCurrentSession();
+        session.save(person);
 
     }
 
+    @Transactional
     public void update(int id, Person updatedPerson) {
+        Session session = sessionFactory.getCurrentSession();
+        Person personToBeUpdated = session.get(Person.class, id);
 
+        personToBeUpdated.setName(updatedPerson.getName());
+        personToBeUpdated.setAge(updatedPerson.getAge());
+        personToBeUpdated.setEmail(updatedPerson.getEmail());
     }
 
-    public void updateAdmin(int id, Person updatedPerson) {
 
-    }
-
+    @Transactional
     public void delete(int id) {
-
+    Session session = sessionFactory.getCurrentSession();
+    session.remove(session.get(Person.class,id));
     }
 }
 

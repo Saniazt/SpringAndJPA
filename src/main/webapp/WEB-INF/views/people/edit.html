@@ -23,9 +23,6 @@
     <input type="text" th:field="*{address}" id="address"/>
     <div style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address error</div>
     <br/>
-    <label for="adminOrNot">Made an admin(1-yes;0-no): </label>
-    <input type="text" th:field="*{adminOrNot}" id="adminOrNot"/>
-    <br/>
     <input type="submit" value="Update!"/>
 </form>
 

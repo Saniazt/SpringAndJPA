@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class PersonValidator implements Validator {
+public class PersonValidator {
     private final PersonDAO personDAO;
 
     @Autowired
@@ -17,17 +17,5 @@ public class PersonValidator implements Validator {
         this.personDAO = personDAO;
     }
 
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return Person.class.equals(clazz);
-    }
 
-    @Override
-    public void validate(Object target, Errors errors) {
-        Person person = (Person) target;
-        //посмотреть есть ли человек с таким же имейлом в БД(через ДАО)
-        if(personDAO.show(person.getEmail()).isPresent()){
-            errors.rejectValue("email","","This email "+person.getEmail()+" is already exists");
-        }
-    }
 }
