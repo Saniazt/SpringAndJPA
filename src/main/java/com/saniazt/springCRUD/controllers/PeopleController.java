@@ -33,9 +33,9 @@ public class PeopleController {
     public String index(Model model) {
         //Получим всех людей из DAO и передадим на отображение в views
         model.addAttribute("people", peopleService.findAll());
-        itemService.findByItemName("Airpods");
-        itemService.findByOwner(peopleService.findAll().get(0));
-        peopleService.test();
+    /*    itemService.findByItemName("Airpods"); //for debug
+        itemService.findByOwner(peopleService.findAll().get(0)); //for debug
+        peopleService.test();*/ //for debug
         return "people/index";
     }
 
