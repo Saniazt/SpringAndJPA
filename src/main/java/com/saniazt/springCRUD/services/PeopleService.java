@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,8 +29,9 @@ public class PeopleService {
         return peopleRepository.findById(id).orElse(null); //Optional
     }
 
-    @Transactional //помечаем тк этот метод пише в базу данных
+    @Transactional //помечаем тк этот метод пишет в базу данных
     public void save(Person person) {
+        person.setCreatedAt(new Date());
         peopleRepository.save(person);
     }
 
