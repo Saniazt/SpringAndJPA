@@ -2,6 +2,7 @@ package com.saniazt.springCRUD.controllers;
 
 
 
+import com.saniazt.springCRUD.dao.PersonDAO;
 import com.saniazt.springCRUD.models.Person;
 import com.saniazt.springCRUD.services.ItemService;
 import com.saniazt.springCRUD.services.PeopleService;
@@ -18,13 +19,15 @@ import javax.validation.Valid;
 @RequestMapping("/people")
 public class PeopleController {
 
+    private final PersonDAO personDAO;
 
     private final PeopleService peopleService;
     private final ItemService itemService;
 
 
     @Autowired
-    public PeopleController(PeopleService peopleService, ItemService itemService) {
+    public PeopleController(PersonDAO personDAO, PeopleService peopleService, ItemService itemService) {
+        this.personDAO = personDAO;
         this.peopleService = peopleService;
         this.itemService = itemService;
     }
@@ -33,6 +36,7 @@ public class PeopleController {
     public String index(Model model) {
         //Получим всех людей из DAO и передадим на отображение в views
         model.addAttribute("people", peopleService.findAll());
+       /* personDAO.testNPlus1();*/
     /*    itemService.findByItemName("Airpods"); //for debug
         itemService.findByOwner(peopleService.findAll().get(0)); //for debug
         peopleService.test();*/ //for debug
