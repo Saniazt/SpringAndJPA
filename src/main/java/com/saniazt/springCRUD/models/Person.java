@@ -32,6 +32,8 @@ public class Person {
     @DateTimeFormat(pattern = "dd/MM/yyyy")// для автоматического парсинга до класса Date. MM - month, mm - minutes
     private Date dateOfBirth;
 
+    @Enumerated(EnumType.STRING)
+    private Mood mood;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)//для Spring точное время
@@ -122,5 +124,13 @@ public class Person {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Mood getMood() {
+        return mood;
+    }
+
+    public void setMood(Mood mood) {
+        this.mood = mood;
     }
 }

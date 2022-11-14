@@ -1,6 +1,7 @@
 package com.saniazt.springCRUD.services;
 
 
+import com.saniazt.springCRUD.models.Mood;
 import com.saniazt.springCRUD.models.Person;
 import com.saniazt.springCRUD.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class PeopleService {
 
     @Transactional //помечаем тк этот метод пишет в базу данных
     public void save(Person person) {
+        person.setMood(Mood.CALM);
         person.setCreatedAt(new Date());
         peopleRepository.save(person);
     }
